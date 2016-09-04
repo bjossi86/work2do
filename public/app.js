@@ -16,13 +16,15 @@ app
             template: '<home></home>'
         })
         .when('/login', {
-            template: '<login></login>',
-            resolve: {
-                currentUser: function(firebase) {
-                    debugger
-                    var user = firebase.auth().currentUser;
-                }
-            }
+            template: '<login></login>'
+            // resolve: {
+            //     currentUser: function(firebase) {
+            //         return firebase.auth().currentUser;
+            //         // firebase.auth().onAuthStateChanged(function(user) {
+            //         //     return user;
+            //         // });
+            //     }
+            // }
         })
         .otherwise('/home')
 });
