@@ -16,7 +16,18 @@ app
             template: '<home></home>'
         })
         .when('/login', {
-            template: '<login></login>'
+            template: '<login current-auth="$resolve.currentAuth"></login>',
+            resolve: {
+                currentAuth: function(firebase, $q) {
+                    // console.log(firebase.auth());
+                    // return firebase.auth().waitForAuth();
+                    var deferred = $q.defer();
+                    firebase.auth().onAuthStateChanged(function(user) {
+                        deferred.resolve(user);
+                    });
+                    return deferred.promise;
+                }
+            }
             // resolve: {
             //     currentUser: function(firebase) {
             //         return firebase.auth().currentUser;

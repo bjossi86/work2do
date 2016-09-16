@@ -7,56 +7,39 @@
 
     Login.$inject = ['firebase', '$location', '$scope'];
     function Login(firebase, $location, $scope, $rootScope) {
-        var vm = this;
+        var vm = this,
+            auth = firebase.auth();
 
-        vm.anonLogin = anonLogin;
         vm.fbLogin = fbLogin;
         vm.signOut = signOut;
+        vm.loggedIn = !!vm.currentAuth;
 
         activate();
 
         ///////////////////////////////
         function activate() {
-            // vm.currentUser = firebase.auth().currentUser;
-        }
 
-        // firebase.auth().onAuthStateChanged(function(user) {
-        //     vm.currentUser = user;
-        // })
-
-        function anonLogin() {
-            firebase.auth().signInAnonymously()
-            .then(function(response){
-                $location.path('/home');
-                console.log(response);
-            })
-            .catch((function(err) {
-                console.log('not logged in');
-                this.errorMessage = err.code;
-            })
-            .bind(this));
         }
 
         function fbLogin() {
             var provider = new firebase.auth.FacebookAuthProvider();
-            firebase.auth().signInWithPopup(provider)
+            auth.signInWithPopup(provider)
             .then(function(result){
-                var token = result.credential.accessToken;
-                var user = result.user;
-                console.log('token', token);
+                vm.currentAuth = result.user;
+                vm.loggedIn = true;
+                $scope.$digest();
             })
             .catch((function(err) {
-                console.log('not logged in');
-                this.errorMessage = err.code;
+                vm.errorMessage = err.code;
             })
             .bind(this));
         }
 
         function signOut() {
-            firebase.auth().signOut().then(function() {
-                vm.currentUser = null;
-                console.log('signed out!');
-              // Sign-out successful.
+            auth.signOut().then(function() {
+                vm.currentAuth = null;
+                vm.loggedIn = false;
+                $scope.$digest();
             }, function(error) {
               // An error happened.
             });

@@ -1,10 +1,8 @@
-<h1 ng-show="!vm.currentUser">Please login</h1>
-<h1 ng-show="vm.currentUser">You have already logged in</h1>
-<button class="btn btn-primary" ng-click="vm.anonLogin()">Anonymous</button>
-<button class="btn btn-primary" ng-click="vm.fbLogin()">Log in with Facebook</button>
-<button class="btn btn-primary" ng-click="vm.signOut()">Sign Out</button>
-
+<h1 ng-show="!vm.loggedIn">Please login</h1>
+<h1 ng-show="vm.loggedIn">You have already logged in</h1>
+<button ng-show="!vm.loggedIn" class="btn btn-primary" ng-click="vm.fbLogin()">Log in with Facebook</button>
+<button ng-show="vm.loggedIn" class="btn btn-primary" ng-click="vm.signOut()">Sign Out</button>
 <br><br>
 <div class="alert alert-danger" ng-show="!!vm.errorMessage">{{errorMessage}}</div>
 
-<pre>{{vm.currentUser|json}}</pre>
+<pre>{{vm.currentAuth|json}}</pre>

@@ -2,9 +2,9 @@
   "name": "work2do",
   "version": "1.0.0",
   "description": "Work 2 do application",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "http-server"
+    "start": "http-server -c-1"
   },
   "keywords": [],
   "author": "Björn Vignir Magnússon",
