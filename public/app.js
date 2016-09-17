@@ -18,24 +18,20 @@ app
         .when('/login', {
             template: '<login current-auth="$resolve.currentAuth"></login>',
             resolve: {
-                currentAuth: function(firebase, $q) {
-                    // console.log(firebase.auth());
-                    // return firebase.auth().waitForAuth();
+                currentAuth: function(firebase, $q, $location) {
                     var deferred = $q.defer();
                     firebase.auth().onAuthStateChanged(function(user) {
                         deferred.resolve(user);
+                        if (user) {
+                            $location.path('/home');
+                        }
                     });
                     return deferred.promise;
                 }
             }
-            // resolve: {
-            //     currentUser: function(firebase) {
-            //         return firebase.auth().currentUser;
-            //         // firebase.auth().onAuthStateChanged(function(user) {
-            //         //     return user;
-            //         // });
-            //     }
-            // }
+        })
+        .when('/logout', {
+            template: '<logout></logout>'
         })
         .otherwise('/home')
 });
